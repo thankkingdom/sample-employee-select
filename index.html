@@ -1,0 +1,188 @@
+<html lang="ja">
+	<head>
+		<meta charset="Shift_JIS">
+		<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+		<title>サンプル</title>
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+		<style>
+			h1 {
+				color: #009999;
+				text-decoration: underline;
+			}
+			.box {
+				border: 1px solid lightgray;
+			}
+			.addBtn {
+				color: blue;
+				margin: 5px;
+			}
+			.delBtn {
+				color: gray;
+				margin: 5px;
+				transform: rotate(45deg);
+			}
+			.selectAllBtn {
+				color: blue;
+				text-decoration: underline;
+				background-color:white;
+				border: none;
+			}
+			.itemSelected {
+				background-color: lightgray;
+			}
+			.arrow-button {
+				border: 1px solid;
+				width: 40px;
+				height: 40px;
+				border-radius: 5px;
+			}
+			.arrow-button:hover {
+				cursor: pointer;
+				color: white;
+				background-color: gray;
+			}
+		</style>
+		<script type="text/javascript">
+			function swithSelect(e, isSelect) {
+				console.log(e.parentElement);
+				let clerkCd = e.parentElement.dataset.clerkcd;
+				console.log("clerkCd: " + clerkCd);
+				let s = document.querySelector("#clerkCd");
+				for (let i = 0; i < s.options.length; i++) {
+					if (s.options[i].value == clerkCd) {
+						s.options[i].selected = isSelect;
+					}
+				}
+				// 選択可能社員
+				let list = document.getElementsByName("clerk");
+				for (let i = 0; i < list.length; i++) {
+					if (list[i].dataset.clerkcd == clerkCd) {
+						console.log("d1:" + list[i].style.cssText);
+						let displayValue = isSelect ? "none" : "block";
+						list[i].style.display = displayValue;
+						list[i].style.cssText += "display:" + displayValue + " !important";
+						console.log("d2:" + list[i].style.cssText);
+					}
+				}
+				// 選択済み社員
+				list = document.getElementsByName("clerk_selected");
+				for (let i = 0; i < list.length; i++) {
+					if (list[i].dataset.clerkcd == clerkCd) {
+						console.log("d3:" + list[i].style.cssText);
+						let displayValue = isSelect ? "block" : "none";
+						list[i].style.display = displayValue;
+						list[i].style.cssText = "display:" + displayValue + " !important";
+						console.log("d4:" + list[i].style.cssText);
+					}
+				}
+			}
+			function selectAll_bk(ename) {
+				// 選択可能社員：clerk, 選択済み社員：clerk_selected
+				let list = document.getElementsByName(ename);
+				for (let i = 0; i < list.length; i++) {
+					if (list[i].classList.contains("itemSelected")) {
+						list[i].classList.remove("itemSelected");
+					} else {
+						list[i].classList.add("itemSelected");
+					}
+				}
+			}
+			function selectAll(ename) {
+				// 選択可能社員：clerk, 選択済み社員：clerk_selected
+				let list = document.getElementsByName(ename);
+				for (let i = 0; i < list.length; i++) {
+					list[i].children[0].dispatchEvent(new Event("click"));
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="content"></div>
+			<div class="row">
+				<div class="col">
+					<h1>サンプル</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-5">
+					<div class="d-flex justify-content-between">
+						<div>選択可能社員</div>
+						<div><button type="button" class="selectAllBtn" onclick="selectAll('clerk');">すべて選択</button></div>
+					</div>
+					<div style="border: 1px solid; height: 200px;">
+						<div name="clerk" data-clerkcd="1" class="box" style="display: block;">
+							<i class="bi bi-plus-circle-fill addBtn" onclick="swithSelect(this, true);"></i>あああ　あああ
+						</div>
+						<div name="clerk" data-clerkcd="2" class="box" style="display: block;">
+							<i class="bi bi-plus-circle-fill addBtn" onclick="swithSelect(this, true);"></i>いいい　いいい
+						</div>
+						<div name="clerk" data-clerkcd="3" class="box" style="display: block;">
+							<i class="bi bi-plus-circle-fill addBtn" onclick="swithSelect(this, true);"></i>ううう　ううう
+						</div>
+						<div name="clerk" data-clerkcd="4" class="box" style="display: block;">
+							<i class="bi bi-plus-circle-fill addBtn" onclick="swithSelect(this, true);"></i>えええ　えええ
+						</div>
+						<div name="clerk" data-clerkcd="5" class="box" style="display: block;">
+							<i class="bi bi-plus-circle-fill addBtn" onclick="swithSelect(this, true);"></i>おおお　おおお
+						</div>
+					</div>
+				</div>
+				<div class="col-1 mt-auto d-flex justify-content-end">
+					<div class="mt-auto">
+						<div id="hj-top" onclick="moveToTop()" class="arrow-button d-flex justify-content-center align-items-center mb-2">
+							<i class="bi bi-arrow-up" style="border-top: 1px solid"></i>
+						</div>
+						<div id="hj-above" onclick="moveUp()" class="arrow-button d-flex justify-content-center align-items-center mb-2">
+							<i class="bi bi-arrow-up"></i>
+						</div>
+						<div id="hj-under" onclick="moveDown()" class="arrow-button d-flex justify-content-center align-items-center mb-2">
+							<i class="bi bi-arrow-down"></i>
+						</div>
+						<div id="hj-bottom" onclick="moveToBottom()" class="arrow-button d-flex justify-content-center align-items-center mb-2">
+							<i class="bi bi-arrow-down" style="border-bottom: 1px solid"></i>
+						</div>
+					</div>
+				</div>
+				<div class="col-5">
+					<div class="d-flex justify-content-between">
+						<div>表示順（選択済み社員）</div>
+						<div><button type="button" class="selectAllBtn" onclick="selectAll('clerk_selected');">すべて選択</button></div>
+					</div>
+					<div style="border: 1px solid; height: 200px;">
+						<div name="clerk_selected" data-clerkcd="1" class="box" style="display: none !important;">
+							<i class="bi bi-plus-circle-fill delBtn" onclick="swithSelect(this, false);"></i>あああ　あああ
+						</div>
+						<div name="clerk_selected" data-clerkcd="2" class="box" style="display: none !important;">
+							<i class="bi bi-plus-circle-fill  delBtn" onclick="swithSelect(this, false);"></i>いいい　いいい
+						</div>
+						<div name="clerk_selected" data-clerkcd="3" class="box" style="display: none !important;">
+							<i class="bi bi-plus-circle-fill  delBtn" onclick="swithSelect(this, false);"></i>ううう　ううう
+						</div>
+						<div name="clerk_selected" data-clerkcd="4" class="box" style="display: none !important;">
+							<i class="bi bi-plus-circle-fill  delBtn" onclick="swithSelect(this, false);"></i>えええ　えええ
+						</div>
+						<div name="clerk_selected" data-clerkcd="5" class="box" style="display: none !important;">
+							<i class="bi bi-plus-circle-fill delBtn" onclick="swithSelect(this, false);"></i>おおお　おおお
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col5">
+					<select id="clerkCd" multiple size="10" style="width: 200px;">
+						<option value="1">あああ　あああ</option>
+						<option value="2">いいい　いいい</option>
+						<option value="3">ううう　ううう</option>
+						<option value="4">えええ　えええ</option>
+						<option value="5">おおお　おおお</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
